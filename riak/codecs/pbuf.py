@@ -203,7 +203,7 @@ class PbufCodec(Codec):
                 sibling.last_modified += rpb_content.last_mod_usecs / 1000000.0
 
         sibling.usermeta = dict([(bytes_to_str(usermd.key),
-                                  bytes_to_str(usermd.value))
+                                  usermd.value)
                                  for usermd in rpb_content.usermeta])
         sibling.indexes = set([(bytes_to_str(index.key),
                                 decode_index_value(index.key, index.value))
@@ -928,7 +928,10 @@ class PbufCodec(Codec):
             req.deletedvclock = True
         req.bucket = str_to_bytes(bucket.name)
         self._add_bucket_type(req, bucket.bucket_type)
-        req.key = str_to_bytes(robj.key)
+        if type(robj.key) == bytes:
+            req.key = robj.key
+        else:
+            req.key = str_to_bytes(robj.key)
         req.head = head_only
         mc = riak.pb.messages.MSG_CODE_GET_REQ
         rc = riak.pb.messages.MSG_CODE_GET_RESP

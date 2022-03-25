@@ -741,7 +741,7 @@ class RiakClientOperations(RiakClientTransport):
         :type head_only: bool
         """
         _validate_timeout(timeout)
-        if not isinstance(robj.key, six.string_types):
+        if not isinstance(robj.key, six.string_types) and type(robj.key) != bytes:
             raise TypeError(
                 'key must be a string, instead got {0}'.format(repr(robj.key)))
 

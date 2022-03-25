@@ -120,7 +120,7 @@ def decode_index_value(index, value):
     elif PY2:
         return str(value)
     else:
-        return bytes_to_str(value)
+        return value
 
 
 def bytes_to_str(value, encoding='utf-8'):
